@@ -56,3 +56,12 @@ function getMessage($data = 'description')
 
     return $message[$data];
 }
+
+function get_fields_type($fields)
+{
+    if (filter_var($fields, FILTER_VALIDATE_EMAIL)) return 'email';
+
+    if (is_numeric($fields)) return 'mobile';
+
+    return 'username';
+}
