@@ -35,8 +35,10 @@ function fileUpload($file, $file_path, $sizes)
 
     // resize different file size
     foreach ($sizes as $size) {
+        $image = Image::make($file->getRealPath());
+
         $resize = $image
-            ->resize($size, null, function ($constraint) {
+            ->resize($size, $size, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
