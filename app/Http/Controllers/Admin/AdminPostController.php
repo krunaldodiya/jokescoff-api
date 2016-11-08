@@ -47,7 +47,7 @@ class AdminPostController extends Controller
     {
         $filename = $request->post_image_old;
         if ($request->file('post_image')) {
-            $filename = fileUpload($request->file('post_image'), public_path("uploads/posts"), [90, 30]);
+            $filename = fileUpload($request->file('post_image'), public_path("uploads/posts"), [140, 420]);
         }
 
         $post = Post::create([
@@ -90,7 +90,7 @@ class AdminPostController extends Controller
     {
         $filename = $request->post_image_old;
         if ($request->file('post_image')) {
-            $filename = fileUpload($request->file('post_image'), public_path("uploads/posts"), [90, 30]);
+            $filename = fileUpload($request->file('post_image'), public_path("uploads/posts"), [140, 420]);
         }
 
         $post = Post::whereId($request->post_id)->update([
