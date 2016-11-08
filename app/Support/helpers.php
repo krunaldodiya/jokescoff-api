@@ -35,7 +35,9 @@ function fileUpload($file, $file_path, $sizes)
 
     // resize different file size
     foreach ($sizes as $size) {
-        $image->resize($size, $size)->save("$file_path/{$size}-{$size}-{$file_name}");
+        $image->resize($size, $size, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save("$file_path/{$size}-{$size}-{$file_name}");
     }
 
     return ($upload) ? $file_name : false;
