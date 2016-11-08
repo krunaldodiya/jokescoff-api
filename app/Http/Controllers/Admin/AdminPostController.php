@@ -47,7 +47,7 @@ class AdminPostController extends Controller
     {
         $filename = $request->post_image_old;
         if ($request->file('post_image')) {
-            $filename = fileUpload($request->file('post_image'), public_path("uploads/posts"), [140, 420]);
+            $filename = fileUpload($request->file('post_image'), "uploads/posts", [140, 420]);
         }
 
         $post = Post::create([
@@ -57,13 +57,11 @@ class AdminPostController extends Controller
             "cover" => isset($filename) ? $filename : "default.png"
         ]);
 
-        $post_category = Category::with("parent")->find($request->category_id);
+        $post_category = Category::find($request->category_id);
         PostCategory::create([
             "post_id" => $post->id,
-            "parent_category_id" => $post_category->parent->id,
-            "parent_category_name" => $post_category->parent->name,
+            "parent_category_id" => $post_category->parent_id,
             "category_id" => $post_category->id,
-            "category_name" => $post_category->name
         ]);
 
         if ($post) return redirect()->route('admin-show-posts')
@@ -90,7 +88,7 @@ class AdminPostController extends Controller
     {
         $filename = $request->post_image_old;
         if ($request->file('post_image')) {
-            $filename = fileUpload($request->file('post_image'), public_path("uploads/posts"), [140, 420]);
+            $filename = fileUpload($request->file('post_image'), "uploads/posts", [140, 420]);
         }
 
         $post = Post::whereId($request->post_id)->update([
@@ -100,13 +98,11 @@ class AdminPostController extends Controller
             "cover" => isset($filename) ? $filename : "default.png"
         ]);
 
-        $post_category = Category::with("parent")->find($request->category_id);
+        $post_category = Category::find($request->category_id);
         PostCategory::wherePostId($request->post_id)->update([
             "post_id" => $request->post_id,
-            "parent_category_id" => $post_category->parent->id,
-            "parent_category_name" => $post_category->parent->name,
+            "parent_category_id" => $post_category->parent_id,
             "category_id" => $post_category->id,
-            "category_name" => $post_category->name
         ]);
 
         if ($post) return redirect()->route('admin-show-posts')

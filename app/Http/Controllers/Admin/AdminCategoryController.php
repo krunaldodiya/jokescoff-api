@@ -49,7 +49,7 @@ class AdminCategoryController extends Controller
     {
         $filename = $request->category_image_old;
         if ($request->file('category_image')) {
-            $filename = fileUpload($request->file('category_image'), public_path("uploads/categories"), [90, 30]);
+            $filename = fileUpload($request->file('category_image'), "uploads/categories", [90, 30]);
         }
 
         Category::create([
@@ -83,7 +83,7 @@ class AdminCategoryController extends Controller
     {
         $filename = $request->category_image_old;
         if ($request->file('category_image')) {
-            $filename = fileUpload($request->file('category_image'), public_path("uploads/categories"), [90, 30]);
+            $filename = fileUpload($request->file('category_image'), "uploads/categories", [90, 30]);
         }
 
         Category::whereId($request->category_id)->update([

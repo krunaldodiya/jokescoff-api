@@ -1,5 +1,8 @@
 <?php
 
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+
 function filenameSlug($file)
 {
     $filename = explode(".", $file->getClientOriginalName());
@@ -24,20 +27,20 @@ function getSelectedCategory($category_id)
 
 function fileUpload($file, $file_path, $sizes)
 {
-    // generating unique and random filename
     $file_name = str_random(8) . '-' . filenameSlug($file);
 
-    // creating image
-    $image = Image::make($file->getRealPath());
-
     // saving original image
-    $upload = $image->save("$file_path/$file_name");
+    $image = Image::make($file->getRealPath());
+    $upload = Storage::disk(env('STORAGE_DISK'))->put("$file_path/$file_name", $image->stream()->__toString(), 'public');
 
     // resize different file size
     foreach ($sizes as $size) {
-        $image->resize($size, $size, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save("$file_path/{$size}-{$size}-{$file_name}");
+        $resize = $image
+            ->resize($size, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
+        Storage::disk(env('STORAGE_DISK'))->put("$file_path/{$size}-{$size}-$file_name", $resize->stream()->__toString(), 'public');
     }
 
     return ($upload) ? $file_name : false;

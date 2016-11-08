@@ -54,7 +54,7 @@
                             <div class="col-md-8">
                                 <select name="category_id" class="form-control">
                                     @foreach($root_categories as $selected_category)
-                                        <option value="{{ $selected_category->id }}" disabled>
+                                        <option value="{{ $selected_category->id }}">
                                             {{ $selected_category->name }}
                                         </option>
 

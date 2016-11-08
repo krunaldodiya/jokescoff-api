@@ -54,7 +54,7 @@
                             <div class="col-md-8">
                                 <select name="category_id" class="form-control">
                                     @foreach($root_categories as $selected_category)
-                                        <option value="{{ $selected_category->id }}" disabled>
+                                        <option value="{{ $selected_category->id }}">
                                             {{ $selected_category->name }}
                                         </option>
 
@@ -75,7 +75,7 @@
 
                             <div class="col-md-8">
                                 @if($post->cover)
-                                    <img src="/uploads/posts/90-90-{{$post->cover}}" style="margin: 5px 0px">
+                                    <img src="/uploads/posts/140-140-{{$post->cover}}" style="margin: 5px 0px">
                                 @endif
                                     <input type="file" name="post_image">
                                     <input type="hidden" name="post_image_old" value="{{ $post->cover }}">

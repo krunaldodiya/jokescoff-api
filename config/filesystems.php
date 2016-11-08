@@ -65,6 +65,7 @@ return [
         'uploads' => [
             'driver' => 'local',
             'root' => public_path(),
+            'visibility' => 'public',
         ],
 
     ],

@@ -21,15 +21,9 @@ class Post extends Model
 
     public function scopeSelectedCategory($query, $category_id)
     {
-        $selected_category = $category_id ? Category::find($category_id) : null;
-
-        if (count($selected_category)) {
-            $query->whereHas('category', function ($query) use ($selected_category) {
-                $query->where('parent_category_id', ($selected_category->parent_id == 0) ? $selected_category->id : $selected_category->parent_id);
-
-                if ($selected_category->parent_id != 0) {
-                    $query->where('category_id', $selected_category->id);
-                }
+        if ($category_id) {
+            $query->whereHas('category', function ($query) use ($category_id) {
+                $query->where('parent_category_id', $category_id)->orWhere('category_id', $category_id);
             });
         }
 
