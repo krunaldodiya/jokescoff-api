@@ -18,7 +18,6 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('cover');
-            $table->text('keywords');
 
             $table->timestamps();
             $table->tinyInteger('status')->default(1);

@@ -16,7 +16,7 @@ class CategoriesController extends Controller
     public function getCategoriesTree()
     {
         return response([
-            'categories' => Category::with('child')->whereParentId(0)->get(),
+            'categories' => Category::with('child')->whereParentId(0)->orderBy('name', 'asc')->get(),
         ], 200);
     }
 }

@@ -53,7 +53,6 @@ class AdminPostController extends Controller
         $post = Post::create([
             "title" => $request->title,
             "description" => $request->description,
-            "keywords" => $request->keywords,
             "cover" => isset($filename) ? $filename : "default.png"
         ]);
 
@@ -94,7 +93,6 @@ class AdminPostController extends Controller
         $post = Post::whereId($request->post_id)->update([
             "title" => $request->title,
             "description" => $request->description,
-            "keywords" => $request->keywords,
             "cover" => isset($filename) ? $filename : "default.png"
         ]);
 

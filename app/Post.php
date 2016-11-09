@@ -33,7 +33,7 @@ class Post extends Model
     public function scopeSearch($query, $search)
     {
         if ($search) {
-            return $query->where('posts.keywords', 'LIKE', "%$search%");
+            return $query->where('posts.title', 'LIKE', "%$search%")->orWhere('posts.description', 'LIKE', "%$search%");
         }
 
         return $query;

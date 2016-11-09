@@ -36,17 +36,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group required {{ $errors->has('keywords') ? 'has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="keywords">Keywords
-                                <sup>*</sup></label>
-
-                            <div class="col-md-8">
-                            <textarea name="keywords" class="form-control"
-                                      placeholder="Keywords"></textarea>
-                                {!! $errors->first('keywords', '<span class="help-block">:message</span>') !!}
-                            </div>
-                        </div>
-
                         <div class="form-group required {{ $errors->has('parent_id') ? 'has-error' : '' }}">
                             <label class="col-md-3 control-label" for="parent_id">Category
                                 <sup>*</sup></label>
