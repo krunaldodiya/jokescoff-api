@@ -32,7 +32,7 @@
                         @foreach($posts as $post)
                             <tr>
                                 <td>{{ $post->title }}</td>
-                                <td>{{ $post->category->category_name }}</td>
+                                <td>{{ $post->category->name }}</td>
                                 <td class="text-center" style="width: 120px">
                                     <a href="{{ route('admin-update-posts', [$post->id]) }}">edit</a>
                                     <span>|</span>

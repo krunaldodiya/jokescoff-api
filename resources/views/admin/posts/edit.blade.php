@@ -43,13 +43,13 @@
                             <div class="col-md-8">
                                 <select name="category_id" class="form-control">
                                     @foreach($root_categories as $selected_category)
-                                        <option value="{{ $selected_category->id }}">
+                                        <option {{ isSelected($selected_category->id, $post->category_id) }} value="{{ $selected_category->id }}">
                                             {{ $selected_category->name }}
                                         </option>
 
-                                        @foreach($selected_category->child as $selected_category)
-                                            <option {{ isSelected($selected_category->id, $post->category->category_id) }} value="{{ $selected_category->id }}">
-                                                {{ $selected_category->name }}
+                                        @foreach($selected_category->child as $selected_child_category)
+                                            <option {{ isSelected($selected_child_category->id, $post->category_id) }} value="{{ $selected_child_category->id }}">
+                                                {{ $selected_child_category->name }}
                                             </option>
                                         @endforeach
                                     @endforeach

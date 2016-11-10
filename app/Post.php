@@ -1,14 +1,12 @@
 <?php namespace App;
 
-use Carbon\Carbon;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
     protected $table = 'posts';
 
-    protected $fillable = ['title', 'description', 'cover', 'keywords', 'status'];
+    protected $fillable = ['id', 'title', 'description', 'parent_category_id', 'category_id', 'cover', 'status'];
 
     protected $hidden = [];
 
@@ -16,15 +14,13 @@ class Post extends Model
 
     public function category()
     {
-        return $this->belongsTo('App\PostCategory', 'id', 'post_id');
+        return $this->belongsTo('App\Category', 'category_id', 'id');
     }
 
     public function scopeSelectedCategory($query, $category_id)
     {
         if ($category_id) {
-            $query->whereHas('category', function ($query) use ($category_id) {
-                $query->where('parent_category_id', $category_id)->orWhere('category_id', $category_id);
-            });
+            return $query->where('posts.parent_category_id', $category_id)->orWhere('posts.category_id', $category_id);
         }
 
         return $query;

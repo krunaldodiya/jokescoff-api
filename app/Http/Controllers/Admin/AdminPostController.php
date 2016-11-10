@@ -25,7 +25,8 @@ class AdminPostController extends Controller
      */
     public function show()
     {
-        $posts = Post::with(['category'])->paginate(20);
+        $posts = Post::with('category')->paginate(20);
+
         return view("admin.posts.show", compact("posts"));
     }
 
@@ -50,17 +51,13 @@ class AdminPostController extends Controller
             $filename = fileUpload($request->file('post_image'), "uploads/posts", [140, 420]);
         }
 
+        $post_category = Category::find($request->category_id);
         $post = Post::create([
             "title" => $request->title,
             "description" => $request->description,
-            "cover" => isset($filename) ? $filename : "default.png"
-        ]);
-
-        $post_category = Category::find($request->category_id);
-        PostCategory::create([
-            "post_id" => $post->id,
             "parent_category_id" => $post_category->parent_id,
             "category_id" => $post_category->id,
+            "cover" => isset($filename) ? $filename : "default.png"
         ]);
 
         if ($post) return redirect()->route('admin-show-posts')
@@ -90,17 +87,13 @@ class AdminPostController extends Controller
             $filename = fileUpload($request->file('post_image'), "uploads/posts", [140, 420]);
         }
 
+        $post_category = Category::find($request->category_id);
         $post = Post::whereId($request->post_id)->update([
             "title" => $request->title,
             "description" => $request->description,
-            "cover" => isset($filename) ? $filename : "default.png"
-        ]);
-
-        $post_category = Category::find($request->category_id);
-        PostCategory::wherePostId($request->post_id)->update([
-            "post_id" => $request->post_id,
             "parent_category_id" => $post_category->parent_id,
             "category_id" => $post_category->id,
+            "cover" => isset($filename) ? $filename : "default.png"
         ]);
 
         if ($post) return redirect()->route('admin-show-posts')
