@@ -25,6 +25,7 @@
                         <thead>
                         <th>Title</th>
                         <th>Category</th>
+                        <th>Date</th>
                         <th class="text-center">Action</th>
                         </thead>
                         </tbody>
@@ -33,6 +34,7 @@
                             <tr>
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->category->name }}</td>
+                                <td>{{ $post->created_at->diffForHumans() }}</td>
                                 <td class="text-center" style="width: 120px">
                                     <a href="{{ route('admin-update-posts', [$post->id]) }}">edit</a>
                                     <span>|</span>
