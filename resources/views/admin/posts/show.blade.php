@@ -29,7 +29,7 @@
                             <th>No.</th>
                             <th>Title</th>
                             <th>Category</th>
-                            <th>Date</th>
+                            <th>Time/Date</th>
                             <th class="text-center">Action</th>
                             </thead>
                             </tbody>
