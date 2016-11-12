@@ -25,7 +25,7 @@ class AdminPostController extends Controller
      */
     public function show()
     {
-        $posts = Post::with('category')->paginate(20);
+        $posts = Post::with('category')->orderBy('created_at', 'desc')->paginate(20);
 
         return view("admin.posts.show", compact("posts"));
     }
