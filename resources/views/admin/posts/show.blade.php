@@ -13,6 +13,8 @@
                 <div class="col-sm-9">
 
                     <div class="form-group clearfix" style="margin-top: 10px">
+                        <span style="margin-top: 10px; position: absolute;">Total <b>({{ $posts->count() }})</b> posts</span>
+
                         <a href="{{ route('admin-create-posts') }}">
                             <button class="btn btn-md btn-primary pull-right">
                                 Create
@@ -20,30 +22,34 @@
                         </a>
                     </div>
 
-                    <table class="table table-bordered table-responsive">
-                        <tbody>
-                        <thead>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Date</th>
-                        <th class="text-center">Action</th>
-                        </thead>
-                        </tbody>
-                        <tbody>
-                        @foreach($posts as $post)
-                            <tr>
-                                <td>{{ $post->title }}</td>
-                                <td>{{ $post->category->name }}</td>
-                                <td>{{ $post->created_at->diffForHumans() }}</td>
-                                <td class="text-center" style="width: 120px">
-                                    <a href="{{ route('admin-update-posts', [$post->id]) }}">edit</a>
-                                    <span>|</span>
-                                    <a href="{{ route('admin-destroy-posts', [$post->id]) }}">delete</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                    @if(count($posts))
+                        <table class="table table-bordered table-responsive">
+                            <tbody>
+                            <thead>
+                            <th>No.</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th class="text-center">Action</th>
+                            </thead>
+                            </tbody>
+                            <tbody>
+                            @foreach($posts as $index => $post)
+                                <tr>
+                                    <td>{{ $index+1 }}</td>
+                                    <td>{{ $post->title }}</td>
+                                    <td>{{ $post->category->name }}</td>
+                                    <td>{{ $post->created_at->diffForHumans() }}</td>
+                                    <td class="text-center" style="width: 120px">
+                                        <a href="{{ route('admin-update-posts', [$post->id]) }}">edit</a>
+                                        <span>|</span>
+                                        <a href="{{ route('admin-destroy-posts', [$post->id]) }}">delete</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
             </div>
 
