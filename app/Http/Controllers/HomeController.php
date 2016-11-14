@@ -62,9 +62,9 @@ class HomeController extends Controller
         $sync_at = Carbon::now()->format("Y-m-d H:i:s");
         $last_sync = request()->get("last_sync");
 
-        $categories = Category::where(['updated_at', '>=', $last_sync])->get();
-        $posts = Post::where(['updated_at', '>=', $last_sync])->get();
+        $categories = Category::where('updated_at', '>=', $last_sync)->get();
+        $posts = Post::where('updated_at', '>=', $last_sync)->get();
 
-        return response(['sync_at' => $sync_at, 'categories' => $categories, 'posts' => $posts]);
+        return response(['last_sync' => $sync_at, 'categories' => $categories, 'posts' => $posts]);
     }
 }
