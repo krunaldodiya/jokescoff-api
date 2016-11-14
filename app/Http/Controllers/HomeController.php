@@ -50,4 +50,12 @@ class HomeController extends Controller
     {
         return 'unauthorized access';
     }
+
+    /**
+     * @Post("/sync", as="sync")
+     */
+    public function sync()
+    {
+        return response(['sync' => true]);
+    }
 }
