@@ -1,9 +1,10 @@
-<?php
+<?php namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
+use App\Category;
 use App\Http\Requests\SigninRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Post;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 /**
  * @Middleware("web")
@@ -23,7 +24,7 @@ class HomeController extends Controller
      */
     public function logout()
     {
-        Auth::logout();
+        auth()->logout();
 
         return redirect()->to('/login');
     }
@@ -35,7 +36,7 @@ class HomeController extends Controller
      */
     public function loginProcess(SigninRequest $request)
     {
-        $auth = Auth::attempt([
+        $auth = auth()->attempt([
             'email' => $request->get('email'),
             'password' => $request->get('password')
         ]);
@@ -53,9 +54,17 @@ class HomeController extends Controller
 
     /**
      * @Post("/sync", as="sync")
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function sync()
+    public function sync(Request $request)
     {
-        return response(['sync' => true]);
+        $sync_at = Carbon::now()->format("Y-m-d H:i:s");
+        $last_sync = request()->get("last_sync");
+
+        $categories = Category::where(['updated_at', '>=', $last_sync])->get();
+        $posts = Post::where(['updated_at', '>=', $last_sync])->get();
+
+        return response(['sync_at' => $sync_at, 'categories' => $categories, 'posts' => $posts]);
     }
 }
