@@ -5,6 +5,7 @@ use App\Http\Requests\SigninRequest;
 use App\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @Middleware("web")
@@ -62,8 +63,17 @@ class HomeController extends Controller
         $sync_at = Carbon::now()->format("Y-m-d H:i:s");
         $last_sync = request()->get("last_sync");
 
-        $categories = Category::where('updated_at', '>=', $last_sync)->get();
-        $posts = Post::where('updated_at', '>=', $last_sync)->get();
+        $categories_query = DB::table('categories');
+        if ($last_sync) {
+            $categories_query->where('updated_at', '>=', $last_sync);
+        }
+        $categories = $categories_query->get();
+
+        $categories_query = DB::table('posts');
+        if ($last_sync) {
+            $categories_query->where('updated_at', '>=', $last_sync);
+        }
+        $posts = $categories_query->get();
 
         return response(['last_sync' => $sync_at, 'categories' => $categories, 'posts' => $posts]);
     }
