@@ -72,7 +72,7 @@
                             <label class="col-md-3 control-label"></label>
 
                             <div class="col-md-8">
-                                <button type="submit" class="btn btn-md btn-primary">Update</button>
+                                <button type="submit" class="btn btn-md btn-primary">Create</button>
                                 <a class="btn btn-md btn-warning" href="{{ route('admin-show-posts') }}">Go Back</a>
                             </div>
                         </div>

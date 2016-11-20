@@ -13,7 +13,7 @@
                 <div class="col-sm-9">
 
                     <div class="form-group clearfix" style="margin-top: 10px">
-                        <span style="margin-top: 10px; position: absolute;">Total <b>({{ $posts->count() }}
+                        <span style="margin-top: 10px; position: absolute;">Total <b>({{ $posts->total() }}
                                 )</b> posts</span>
 
                         <a href="{{ route('admin-create-posts') }}">
