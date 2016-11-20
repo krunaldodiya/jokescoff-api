@@ -13,7 +13,8 @@
                 <div class="col-sm-9">
 
                     <div class="form-group clearfix" style="margin-top: 10px">
-                        <span style="margin-top: 10px; position: absolute;">Total <b>({{ $posts->count() }})</b> posts</span>
+                        <span style="margin-top: 10px; position: absolute;">Total <b>({{ $posts->count() }}
+                                )</b> posts</span>
 
                         <a href="{{ route('admin-create-posts') }}">
                             <button class="btn btn-md btn-primary pull-right">
@@ -43,7 +44,8 @@
                                     <td class="text-center" style="width: 120px">
                                         <a href="{{ route('admin-update-posts', [$post->id]) }}">edit</a>
                                         <span>|</span>
-                                        <a href="{{ route('admin-destroy-posts', [$post->id]) }}">delete</a>
+                                        <a href="javascript:void(0)"
+                                           onclick="deleteConfirm('{{ route('admin-destroy-posts', [$post->id]) }}')">delete</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -61,3 +63,11 @@
     </div>
 
 @stop
+
+<script type="text/javascript">
+    function deleteConfirm(src) {
+        if (confirm("Are you sure want to delete ?")) {
+            location.href = src;
+        }
+    }
+</script>

@@ -31,7 +31,7 @@
 
                             <div class="col-md-8">
                             <textarea name="description" class="form-control"
-                                      placeholder="Description"></textarea>
+                                      placeholder="Description" rows="8"></textarea>
                                 {!! $errors->first('description', '<span class="help-block">:message</span>') !!}
                             </div>
                         </div>
