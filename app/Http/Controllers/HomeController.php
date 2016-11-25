@@ -60,20 +60,21 @@ class HomeController extends Controller
      */
     public function sync(Request $request)
     {
-        $sync_at = Carbon::now()->format("Y-m-d H:i:s");
+        $type = $request->get("type");
         $last_sync = $request->get("last_sync");
 
-        return response(['last_sync' => $sync_at, 'categories' => $this->getSyncData('categories', $last_sync), 'posts' => $this->getSyncData('posts', $last_sync)]);
+        return response(['data' => $this->getSyncData($type, $last_sync)]);
     }
 
     public function getSyncData($table, $last_sync)
     {
-        $categories_query = DB::table($table);
+        $query = DB::table($table);
 
         if ($last_sync) {
-            $categories_query->where('updated_at', '>=', $last_sync);
+
+            $query->where('updated_at', '>', $last_sync);
         }
 
-        return $categories_query->get();
+        return $query->get();
     }
 }
