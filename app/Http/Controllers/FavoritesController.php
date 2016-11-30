@@ -1,43 +1,49 @@
 <?php namespace App\Http\Controllers;
 
 use App\Favorites;
+use App\User;
 use Illuminate\Http\Request;
 
 /**
- * @Controller(prefix="users/favorites")
+ * @Controller(prefix="favorites")
  * @Middleware("web")
- * @Middleware("auth")
  */
 class FavoritesController extends Controller
 {
     /**
-     * @Get("/", as="show-favorites")
+     * @Post("/show", as="show-favorites")
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showFavorites()
+    public function showFavorites(Request $request)
     {
-        $posts = auth()->user()->favorites()->get();
+        $favorites = Favorites::whereUserId($request->get('user_id'))->get();
 
-        return view('users.favorites', compact('posts'));
+        return response(['favorites' => $favorites], 200);
     }
 
     /**
-     * @Get("{post_id}/toggle", as="toggle-favorites")
+     * @Post("toggle", as="toggle-favorites")
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function toggleFavorites(Request $request)
     {
-        if (Favorites::wherePostId($request->post_id)->count()) {
-            auth()->user()->favorites()->detach($request->post_id);
-        } else {
-            auth()->user()->favorites()->attach($request->post_id);
-        }
+        $favorite = User::whereId($request->get('user_id'))->first()->favorites()->toggle($request->get('post_id'));
+        $status = count($favorite['attached']) ? true : false;
 
-        if ($request->ajax()) {
-            return response(['success' => true], 200);
-        }
+        return response(['success' => $status], 200);
+    }
 
-        return back();
+    /**
+     * @Post("favorited", as="is-favorited")
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function isFavorited(Request $request)
+    {
+        $favorited = Favorites::wherePostIdAndUserId($request->get('post_id'), $request->get('user_id'))->count() ? true : false;
+
+        return response(['favorited' => $favorited], 200);
     }
 }

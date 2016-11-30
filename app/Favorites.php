@@ -9,9 +9,4 @@ class Favorites extends Model
     protected $fillable = ['user_id', 'post_id'];
 
     protected $hidden = [];
-
-    public function user()
-    {
-        return $this->belongsTo('App\User', 'user_id', 'id');
-    }
 }

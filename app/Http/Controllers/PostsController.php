@@ -56,18 +56,4 @@ class PostsController extends Controller
 
         return response(['post_detail' => $post, 'similar_posts' => $similar_posts, 'previous_post' => $previous, 'next_post' => $next], 200);
     }
-
-    /**
-     * @Post("download/photo", as="destroy-posts", middleware="auth")
-     * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
-    public function downloadPhoto(Request $request)
-    {
-        $image_url = $request->input('path');
-        $image_name = explode("/", $image_url);
-        $image_path = public_path() . "/" . $image_url;
-
-        return response()->download($image_path, end($image_name), []);
-    }
 }

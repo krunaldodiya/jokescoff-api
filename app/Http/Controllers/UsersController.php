@@ -66,24 +66,4 @@ class UsersController extends Controller
 
         return back()->with('message', 'Profile has been updated successfully.');
     }
-
-    /**
-     * @Post("wallet/history", as="get-users-wallet-history")
-     */
-    public function getUsersWalletHistory()
-    {
-        $wallet_history = WalletHistory::whereUsername($this->user->username)->get();
-
-        return response(['wallet_history' => $wallet_history], 200);
-    }
-
-    /**
-     * @Get("invitations", as="users-invitations")
-     */
-    public function invitations()
-    {
-        $contacts = [];
-
-        return view('users.invitations', compact('contacts'));
-    }
 }
