@@ -3,6 +3,7 @@
 use App\Http\Requests\CreatePostRequest;
 use App\Interfaces\PostsInterface;
 use App\Post;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -34,7 +35,14 @@ class PostsController extends Controller
      */
     public function getPopularPosts()
     {
-        return Post::whereStatus(1)->orderBy('created_at', 'desc')->limit(10)->get();
+        return DB::table('posts')
+            ->select('posts.*')
+            ->leftJoin('ratings', 'posts.id', '=', 'ratings.post_id')
+            ->addSelect(DB::raw('AVG(ratings.ratings) as average_rating'))
+            ->groupBy('posts.id')
+            ->orderBy('average_rating', 'desc')
+            ->limit(10)
+            ->get();
     }
 
     /**
