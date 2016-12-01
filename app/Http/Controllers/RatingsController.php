@@ -17,8 +17,22 @@ class RatingsController extends Controller
     public function showAverageRatings(Request $request)
     {
         $average_ratings = $this->calculateAverageRatings($request->get('post_id'));
+        $average_ratings = $average_ratings ? $average_ratings : 0;
 
         return response(['average_ratings' => number_format($average_ratings, 1)], 200);
+    }
+
+    /**
+     * @Post("users-ratings", as="get-users-ratings")
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getUsersRatings(Request $request)
+    {
+        $users_ratings = Ratings::whereUserIdAndPostId($request->get('user_id'), $request->get('post_id'))->pluck('ratings')->first();
+        $users_ratings = $users_ratings ? $users_ratings : 0;
+
+        return response(['users_ratings' => number_format($users_ratings, 1)], 200);
     }
 
     /**

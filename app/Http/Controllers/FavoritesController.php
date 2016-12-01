@@ -30,17 +30,17 @@ class FavoritesController extends Controller
     public function toggleFavorites(Request $request)
     {
         $favorite = User::whereId($request->get('user_id'))->first()->favorites()->toggle($request->get('post_id'));
-        $status = count($favorite['attached']) ? true : false;
+        $favorited = count($favorite['attached']) ? true : false;
 
-        return response(['success' => $status], 200);
+        return response(['favorited' => $favorited], 200);
     }
 
     /**
-     * @Post("favorited", as="is-favorited")
+     * @Post("status", as="get-favorite-status")
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function isFavorited(Request $request)
+    public function getFavoriteStatus(Request $request)
     {
         $favorited = Favorites::wherePostIdAndUserId($request->get('post_id'), $request->get('user_id'))->count() ? true : false;
 
