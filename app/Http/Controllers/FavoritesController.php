@@ -17,7 +17,7 @@ class FavoritesController extends Controller
      */
     public function showFavorites(Request $request)
     {
-        $favorites = Favorites::whereUserId($request->get('user_id'))->get();
+        $favorites = User::whereId($request->get('user_id'))->first()->favorites()->get();
 
         return response(['favorites' => $favorites], 200);
     }
