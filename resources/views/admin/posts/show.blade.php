@@ -38,8 +38,8 @@
                             @foreach($posts as $index => $post)
                                 <tr>
                                     <td>{{ $index+1 }}</td>
-                                    <td>{{ $post->title }}</td>
                                     <td>{{ $post->id }}</td>
+                                    <td>{{ $post->title }}</td>
                                     <td>{{ $post->category->name }}</td>
                                     <td>{{ $post->created_at->diffForHumans() }}</td>
                                     <td class="text-center" style="width: 120px">
