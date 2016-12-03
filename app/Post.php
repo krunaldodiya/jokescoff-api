@@ -6,7 +6,7 @@ class Post extends Model
 {
     protected $table = 'posts';
 
-    protected $fillable = ['id', 'title', 'description', 'parent_category_id', 'category_id', 'cover', 'status'];
+    protected $fillable = ['id', 'title', 'description', 'keywords', 'parent_category_id', 'category_id', 'cover', 'status'];
 
     protected $hidden = [];
 

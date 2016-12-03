@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['id', 'parent_id', 'name', 'cover', 'status'];
+    protected $fillable = ['id', 'parent_id', 'name', 'cover', 'sort', 'status'];
 
     protected $table = 'categories';
 
