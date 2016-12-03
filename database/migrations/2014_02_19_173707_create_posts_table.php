@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->integer('parent_category_id');
             $table->integer('category_id');
             $table->text('description');
+            $table->text('keywords');
             $table->string('cover');
 
             $table->timestamps();

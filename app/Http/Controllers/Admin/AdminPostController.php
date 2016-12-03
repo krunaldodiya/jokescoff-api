@@ -55,6 +55,7 @@ class AdminPostController extends Controller
         $post = Post::create([
             "title" => $request->title,
             "description" => $request->description,
+            "keywords" => $request->keywords,
             "parent_category_id" => $post_category->parent_id,
             "category_id" => $post_category->id,
             "cover" => isset($filename) ? $filename : "default.png"
@@ -91,6 +92,7 @@ class AdminPostController extends Controller
         $post = Post::whereId($request->post_id)->update([
             "title" => $request->title,
             "description" => $request->description,
+            "keywords" => $request->keywords,
             "parent_category_id" => $post_category->parent_id,
             "category_id" => $post_category->id,
             "cover" => isset($filename) ? $filename : "default.png"
