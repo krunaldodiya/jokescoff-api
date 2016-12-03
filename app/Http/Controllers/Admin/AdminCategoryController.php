@@ -3,6 +3,7 @@
 use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -16,7 +17,7 @@ class AdminCategoryController extends Controller
 
     public function __construct()
     {
-        $this->root_categories = Category::with('child')->whereParentId(0)->get();
+        $this->root_categories = Category::with('child')->whereParentId(0)->orderBy(DB::raw("sort = 0, sort"))->get();
     }
 
     /**
@@ -24,10 +25,22 @@ class AdminCategoryController extends Controller
      * @param Request $request
      * @return $this
      */
-
     public function show(Request $request)
     {
         return view("admin.categories.show")->with(['root_categories' => $this->root_categories]);
+    }
+
+    /**
+     * @Post("category/show", as="admin-sort-category")
+     * @param Request $request
+     * @return $this
+     */
+    public function sortCategory(Request $request)
+    {
+        foreach ($request->get('sort') as $key => $value) {
+            Category::whereId($key)->update(['sort' => $value]);
+        }
+        return back();
     }
 
     /**

@@ -18,7 +18,7 @@ class CreateCategoriesTable extends Migration {
             $table->integer('parent_id');
             $table->string('name');
             $table->string('cover');
-            $table->tinyInteger('has_price');
+            $table->tinyInteger('sort');
             $table->timestamps();
             $table->tinyInteger('status')->default(1); // 1 => activated 0 => de-activated 2 => invited
         });
