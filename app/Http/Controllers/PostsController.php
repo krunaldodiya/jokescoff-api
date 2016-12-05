@@ -32,8 +32,10 @@ class PostsController extends Controller
 
     /**
      * @Post("/popular", as="get-featured-products")
+     * @param Request $request
+     * @return
      */
-    public function getPopularPosts()
+    public function getPopularPosts(Request $request)
     {
         return DB::table('posts')
             ->select('posts.*')
@@ -41,7 +43,7 @@ class PostsController extends Controller
             ->addSelect(DB::raw('AVG(ratings.ratings) as average_rating'))
             ->groupBy('posts.id')
             ->orderBy('average_rating', 'desc')
-            ->limit(10)
+            ->limit($request->get('limit'))
             ->get();
     }
 
