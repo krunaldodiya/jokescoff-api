@@ -62,11 +62,12 @@ class HomeController extends Controller
     {
         $type = $request->get("type");
         $last_sync = $request->get("last_sync");
+        $limit = $request->get("limit");
 
-        return response(['data' => $this->getSyncData($type, $last_sync)]);
+        return response(['data' => $this->getSyncData($type, $last_sync, $limit)]);
     }
 
-    public function getSyncData($table, $last_sync)
+    public function getSyncData($table, $last_sync, $limit)
     {
         $query = DB::table($table);
 
@@ -75,6 +76,6 @@ class HomeController extends Controller
             $query->where('updated_at', '>', $last_sync);
         }
 
-        return $query->orderBy("updated_at", "ASC")->limit(40)->get();
+        return $query->orderBy("updated_at", "ASC")->limit($limit)->get();
     }
 }
