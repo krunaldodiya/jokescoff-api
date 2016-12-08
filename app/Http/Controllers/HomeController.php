@@ -75,6 +75,6 @@ class HomeController extends Controller
             $query->where('updated_at', '>', $last_sync);
         }
 
-        return $query->orderBy("updated_at", "ASC")->get();
+        return $query->orderBy("updated_at", "ASC")->limit(40)->get();
     }
 }
