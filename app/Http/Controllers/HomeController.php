@@ -54,17 +54,29 @@ class HomeController extends Controller
     }
 
     /**
-     * @Post("/sync", as="sync")
+     * @Post("/sync/posts", as="sync-posts")
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function sync(Request $request)
+    public function syncPosts(Request $request)
     {
-        $type = $request->get("type");
         $last_sync = $request->get("last_sync");
         $limit = $request->get("limit");
 
-        return response(['data' => $this->getSyncData($type, $last_sync, $limit)]);
+        return response(['data' => $this->getSyncData("posts", $last_sync, $limit)]);
+    }
+
+    /**
+     * @Post("/sync/categories", as="sync-categories")
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function syncCategories(Request $request)
+    {
+        $last_sync = $request->get("last_sync");
+        $limit = $request->get("limit");
+
+        return response(['data' => $this->getSyncData("categories", $last_sync, $limit)]);
     }
 
     public function getSyncData($table, $last_sync, $limit)
