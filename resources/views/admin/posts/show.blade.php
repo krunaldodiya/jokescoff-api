@@ -42,7 +42,7 @@
                                     <td>{{ $post->id }}</td>
                                     <td>{{ $post->title }}</td>
                                     <td>{{ $post->category->name }}</td>
-                                    <td>{{ $post->updated_at->diffForHumans() }}</td>
+                                    <td>{{ $post->created_at->diffForHumans() }}</td>
                                     <td class="text-center" style="width: 120px">
                                         <a href="{{ route('admin-update-posts', [$post->id]) }}">edit</a>
                                         <span>|</span>
