@@ -13,7 +13,8 @@
                 <div class="col-sm-9">
 
                     <div class="form-group clearfix" style="margin-top: 10px">
-                        <span style="margin-top: 10px; position: absolute;">Total <b>({{ $posts->total() }})</b> posts</span>
+                        <span style="margin-top: 10px; position: absolute;">Total <b>({{ $posts->total() }}
+                                )</b> posts</span>
 
                         <a href="{{ route('admin-create-posts') }}">
                             <button class="btn btn-md btn-primary pull-right">
@@ -41,7 +42,7 @@
                                     <td>{{ $post->id }}</td>
                                     <td>{{ $post->title }}</td>
                                     <td>{{ $post->category->name }}</td>
-                                    <td>{{ $post->created_at->diffForHumans() }}</td>
+                                    <td>{{ $post->updated_at->diffForHumans() }}</td>
                                     <td class="text-center" style="width: 120px">
                                         <a href="{{ route('admin-update-posts', [$post->id]) }}">edit</a>
                                         <span>|</span>

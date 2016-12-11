@@ -60,10 +60,7 @@ class HomeController extends Controller
      */
     public function syncPosts(Request $request)
     {
-        $last_sync = $request->get("last_sync");
-        $limit = $request->get("limit");
-
-        return response(['data' => $this->getSyncData("posts", $last_sync, $limit)]);
+        return response(['data' => $this->getSyncData("posts", $request)]);
     }
 
     /**
@@ -73,21 +70,18 @@ class HomeController extends Controller
      */
     public function syncCategories(Request $request)
     {
-        $last_sync = $request->get("last_sync");
-        $limit = $request->get("limit");
-
-        return response(['data' => $this->getSyncData("categories", $last_sync, $limit)]);
+        return response(['data' => $this->getSyncData("categories", $request)]);
     }
 
-    public function getSyncData($table, $last_sync, $limit)
+    public function getSyncData($table, $request)
     {
-        $query = DB::table($table);
+        $newest = $request->get("newest") ? $request->get("newest") : Carbon::now()->format("Y-m-d h:i:s");
+        $oldest = $request->get("oldest") ? $request->get("oldest") : Carbon::now()->format("Y-m-d h:i:s");
+        $limit = $request->get("limit");
 
-        if ($last_sync) {
+        $data = DB::table($table)->where('updated_at', '>', $newest)->orWhere('updated_at', '<', $oldest)
+            ->orderBy("updated_at", "DESC")->limit($limit)->get();
 
-            $query->where('updated_at', '>', $last_sync);
-        }
-
-        return $query->orderBy("updated_at", "ASC")->limit($limit)->get();
+        return $data;
     }
 }
