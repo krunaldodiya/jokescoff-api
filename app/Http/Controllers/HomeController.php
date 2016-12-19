@@ -78,11 +78,8 @@ class HomeController extends Controller
         $limit = $request->get("limit");
 
         if ($table == "categories") {
-            $query = DB::table("categories");
-            $data = $query->where('updated_at', '>', $newest)->orWhere('updated_at', '<', $oldest)
+            return DB::table("categories")->where('updated_at', '>', $newest)->orWhere('updated_at', '<', $oldest)
                 ->orderBy("updated_at", "DESC")->get();
-
-            return $data;
         }
 
         if ($table == "posts") {
