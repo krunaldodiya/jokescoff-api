@@ -1,10 +1,11 @@
 <?php namespace App\Http\Controllers;
 
 use App\Category;
-use App\Post;
 use App\Http\Requests\SigninRequest;
+use App\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @Middleware("web")
@@ -53,46 +54,79 @@ class HomeController extends Controller
     }
 
     /**
-     * @Post("/sync/categories", as="sync-categories")
-     * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
-    public function syncCategories(Request $request)
-    {
-        $newest = $request->get("newest") ? $request->get("newest") : Carbon::now()->format("Y-m-d h:i:s");
-        $oldest = $request->get("oldest") ? $request->get("oldest") : Carbon::now()->format("Y-m-d h:i:s");
-
-        $data = Category::where('updated_at', '>', $newest)
-            ->orWhere('updated_at', '<', $oldest)
-            ->orderBy("updated_at", "DESC")
-            ->get();
-
-        return $data;
-    }
-
-    /**
      * @Post("/sync/posts", as="sync-posts")
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function syncPosts(Request $request)
     {
+        return response(['data' => $this->getSyncData("posts", $request)]);
+    }
+
+    /**
+     * @Post("/sync/categories", as="sync-categories")
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function syncCategories(Request $request)
+    {
+        return response(['data' => $this->getSyncData("categories", $request)]);
+    }
+
+    public function getSyncData($table, $request)
+    {
         $newest = $request->get("newest") ? $request->get("newest") : Carbon::now()->format("Y-m-d h:i:s");
         $oldest = $request->get("oldest") ? $request->get("oldest") : Carbon::now()->format("Y-m-d h:i:s");
+        $limit = $request->get("limit");
 
-        $data = Post::where('updated_at', '>', $newest)
-            ->orWhere('updated_at', '<', $oldest)
-            ->orderBy("updated_at", "DESC")
-            ->whereHas("category", function ($query) use ($request) {
-                if ($request->get("category_id")) {
-                    $query->where("category_id", $request->get("category_id"));
-                }
-
-                return $query;
-            })
-            ->limit($request->get("limit"))
-            ->get();
+        $data = DB::table($table)->where('updated_at', '>', $newest)->orWhere('updated_at', '<', $oldest)
+            ->orderBy("updated_at", "DESC")->limit($limit)->get();
 
         return $data;
     }
+
+
+//    /**
+//     * @Post("/sync/categories", as="sync-categories")
+//     * @param Request $request
+//     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+//     */
+//    public function syncCategories(Request $request)
+//    {
+//        $newest = $request->get("newest") ? $request->get("newest") : Carbon::now()->format("Y-m-d h:i:s");
+//        $oldest = $request->get("oldest") ? $request->get("oldest") : Carbon::now()->format("Y-m-d h:i:s");
+//
+//        $data = Category::where('updated_at', '>', $newest)
+//            ->orWhere('updated_at', '<', $oldest)
+//            ->orderBy("updated_at", "DESC")
+//            ->get();
+//
+//        return $data;
+//    }
+//
+//    /**
+//     * @Post("/sync/posts", as="sync-posts")
+//     * @param Request $request
+//     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+//     */
+//    public function syncPosts(Request $request)
+//    {
+//        $newest = $request->get("newest") ? $request->get("newest") : Carbon::now()->format("Y-m-d h:i:s");
+//        $oldest = $request->get("oldest") ? $request->get("oldest") : Carbon::now()->format("Y-m-d h:i:s");
+//
+//        $data = Post::where('updated_at', '>', $newest)
+//            ->orWhere('updated_at', '<', $oldest)
+//            ->orderBy("updated_at", "DESC")
+//            ->whereHas("category", function ($query) use ($request) {
+//                if ($request->get("category_id")) {
+//                    $query->where("category_id", $request->get("category_id"));
+//                }
+//
+//                return $query;
+//            })
+//            ->limit($request->get("limit"))
+//            ->get();
+//
+//        return $data;
+//    }
 }
